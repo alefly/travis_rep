@@ -1,0 +1,7 @@
+FROM python:3
+RUN pip install --upgrade pip && \
+    pip install flask && \
+    pip install requests
+COPY copy .
+EXPOSE 8082
+CMD ["python", "./balanser.py"]

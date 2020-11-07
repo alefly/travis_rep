@@ -1,0 +1,40 @@
+version: "3"
+
+services:
+    balancer:
+        image: alefly/balanser:v1
+        container_name: balanser
+        ports:
+          - "1502:8082"
+        depends_on:
+          - server1
+          - server2
+        networks:
+          - server_net
+        build:
+            context: .
+            dockerfile: Dockerfile_balanser
+    server1:
+        image: alefly/server:v1
+        container_name: server1
+        ports:
+          - "1500:8080"
+        networks:
+          - server_net
+        build:
+            context: .
+            dockerfile: Dockerfile_server
+        command: [python, server.py, "8080"]
+    server2:
+        image: alefly/server:v1
+        container_name: server2
+        ports:
+          - "1501:8081"
+        networks:
+          - server_net
+        build:
+            context: .
+            dockerfile: Dockerfile_server
+        command: [python, server.py, "8081"]
+networks:
+    server_net:
