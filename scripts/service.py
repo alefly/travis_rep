@@ -1,13 +1,16 @@
 ﻿import repository
 
+def authorization(login,password):
+	if repository.userInDB(login)['value'] == password:
+		return True
+	return False
+
 def get(file):
-	inCache = repository.checkCache(file)
-	if inCache:
-		return repository.getFromCache(file)
-	inDB = repository.checkDB(file)
-	if inDB:
-		data = repository.getFromDB(file)
-		repository.addToCache(file, data)
+	data = repository.getFromCache(file)
+	if data:
+		return data
+	data = repository.getFromDB(file)
+	if data:
 		return data
 	return -1
 
